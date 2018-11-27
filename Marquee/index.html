@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>走马灯</title>
+</head>
+
+<body>
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      position: absolute;
+      z-index: 9;
+      top: 0;
+      left: 0;
+    }
+
+    .container>div {
+      flex: none;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+  <div class="fs_0 ps_rl w_fc mg_auto">
+    <div class="container ps_rl ws_nw dp_ib">
+      <div class="dp_ib ps_rl"> <span class="ps_ab">4</span> <img src="https://dummyimage.com/160x100" alt=""> </div>
+      <div class="dp_ib ps_rl"> <span class="ps_ab">1</span> <img src="https://dummyimage.com/160x100" alt=""> </div>
+      <div class="dp_ib ps_rl"> <span class="ps_ab">2</span> <img src="https://dummyimage.com/160x100" alt=""> </div>
+      <div class="dp_ib ps_rl"> <span class="ps_ab">3</span> <img src="https://dummyimage.com/160x100" alt=""> </div>
+    </div>
+    <div class="handlelist ps_ab">
+      <div class="pre handle dp_ib" onclick="slider(-1)"></div>
+      <div class="next handle dp_ib" onclick="slider(1)"></div>
+    </div>
+  </div>
+
+  <script>
+    var distance = 0;
+    var moveStep = 0;
+    var progress = 0;
+    var canHandle = false;
+    var time = 300;
+    var container = document.getElementsByClassName('container')[0];
+    var list = document.getElementsByClassName('ws_nw')[0];
+    var width = container.offsetWidth;
+    var scrollX = width;
+    var speed = 10;
+    var runDis = 0
+    var hasAppend =false
+    function slider(distance, time) {
+      scrollX = container.offsetWidth;
+      runDis += 1
+      if (runDis >= scrollX / 3 && !hasAppend) {
+        fragment = document.createDocumentFragment();
+        for (var i = 0, length = container.childNodes.length; i < length; i += 1) {
+          // 文档片段加载克隆的节点
+          fragment.appendChild(container.childNodes[i].cloneNode(true));
+        }
+        // 一刀来个痛快
+        container.appendChild(fragment);
+        hasAppend = true
+      }
+      if(runDis >= scrollX / 2 && hasAppend){
+        runDis = 0
+      }
+      container.style.left = -runDis + "px"
+      requestAnimationFrame(slider);
+    }
+    requestAnimationFrame(slider);
+  </script>
+</body>
+
+</html>
