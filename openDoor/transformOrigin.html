@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style type="text/css">
+    .dom {
+        margin: 100px auto 0 auto;
+        /*width: 20px;*/
+        /*height: 20px;*/
+        /*background: red;*/
+        /*animation: move 3s infinite linear;*/
+        /*transform-origin: 0 300%;*/
+        /*transform-style: preserve-3d ;*/
+        /*border-radius: 100%;*/
+        /*border: 2px solid red;*/
+        /*position: relative;*/
+
+        width: 25px;
+        height: 25px;
+
+        -webkit-animation: circle infinite .75s linear;
+        -moz-animation: circle infinite .75s linear;
+        -o-animation: circle infinite .75s linear;
+        animation: circle infinite .75s linear;
+
+        border: 2px solid #ffffff;
+        border-top-color: rgba(0, 0, 0, .2);
+        border-right-color: rgba(0, 0, 0, .2);
+        border-bottom-color: rgba(0, 0, 0, .2);
+        border-radius: 100%;
+    }
+    @keyframes circle {
+      0%{
+          transform:rotate(0deg);
+      }
+      100%{
+            transform:rotate(360deg);
+      }
+    }
+</style>
+<div class="dom"></div>
+<script></script>
+</body>
+</html>

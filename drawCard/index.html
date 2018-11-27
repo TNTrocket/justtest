@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style type="text/css">
+    .content{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+    }
+    .cardBox{
+        position: relative;
+    }
+    *{
+        padding: 0;
+        margin: 0;
+    }
+    ul li{
+      list-style: none;
+    }
+    .front_side{
+        position: relative;
+        z-index: 2;
+        width: 200px;
+        height: 200px;
+        background: red;
+        backface-visibility: hidden;
+        transition: transform  .4s;
+        transform-style: preserve-3d;
+        animation-timing-function: ease-out;
+        transition-delay: .5s;
+    }
+    .back_side{
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        width: 200px;
+        height: 200px;
+        background: black;
+        transform: rotateY(-180deg);
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+        transition: transform .4s;
+        animation-timing-function: ease-out;
+        transition-delay: .5s;
+    }
+    .contentText{
+        perspective: 1200px;
+    }
+    .cardBox li:hover .front_side{
+        transition: transform  .4s;
+        transform-style: preserve-3d;
+        animation-timing-function: ease-out;
+        transform: rotateY(180deg);
+    }
+    .cardBox li:hover .back_side{
+        transition: transform  .4s;
+        transform-style: preserve-3d;
+        animation-timing-function: ease-out;
+        transform: rotateY(0deg);
+    }
+    .fontActive{
+        transform: rotateY(180deg);
+    }
+    .backActive{
+        transform: rotateY(0deg);
+    }
+</style>
+<div class="content">
+    <ul class="cardBox">
+        <li class="contentText">
+            <div class="front_side">
+
+            </div>
+            <div class="back_side">
+
+            </div>
+        </li>
+    </ul>
+</div>
+<script>
+    var fontSide = document.querySelector('.front_side')
+    var backSide = document.querySelector('.back_side')
+//    fontSide.addEventListener('mouseover', function () {
+//        fontSide.classList.add('fontActive')
+//        backSide.classList.add('backActive')
+//    })
+//    fontSide.addEventListener('mouseleave', function () {
+//        fontSide.className = fontSide.className.replace('fontActive', '')
+//        backSide.className = backSide.className.replace('backActive', '')
+//    })
+//    backSide.addEventListener('mouseleave', function () {
+//        fontSide.className = fontSide.className.replace('fontActive', '')
+//        backSide.className = backSide.className.replace('backActive', '')
+//    })
+</script>
+</body>
+</html>
