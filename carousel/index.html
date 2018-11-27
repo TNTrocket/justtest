@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>无缝的轮播</title>
+</head>
+<body>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .window {
+      width: 400px;
+      height: 300px;
+      margin: 20px auto;
+      overflow: hidden;
+    }
+
+    .images {
+      position: relative;
+    }
+
+    .images>img {
+      position: absolute;
+      transition: all 1500ms;
+      top: 0;
+    }
+
+    .current {
+      transform: translateX(0);
+      z-index: 1;
+    }
+
+    .enter {
+      transform: translateX(100%);
+
+    }
+
+    .leave {
+      transform: translateX(-100%);
+      z-index: 1;
+    }
+  </style>
+  <div class="window">
+    <div class="images">
+      <img src="https://raw.githubusercontent.com/FrankFang/slides-demo-1/60e2833357dd796116bcb2f831436fa4b4627569/1.png"
+        alt="图片1">
+      <img src="https://raw.githubusercontent.com/FrankFang/slides-demo-1/60e2833357dd796116bcb2f831436fa4b4627569/2.png"
+        alt="">
+      <img src="https://raw.githubusercontent.com/FrankFang/slides-demo-1/e3d8aea90f00713882ca2a9f928589100fdbed98/3.png"
+        alt="">
+      <img src="https://raw.githubusercontent.com/FrankFang/slides-demo-1/e3d8aea90f00713882ca2a9f928589100fdbed98/4.png"
+        alt="">
+    </div>
+  </div>
+  <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script>
+    init();
+    var imageNum = $('.images>img')
+    var i = 0;
+    setInterval(function () {
+      $(imageNum).eq(i % imageNum.length).removeClass('current').addClass('leave')
+        .one('transitionend', (e) => {
+          $(e.currentTarget).removeClass('leave').addClass('enter')
+        })
+      $(imageNum).eq((i + 1) % imageNum.length).removeClass('enter').addClass('current');
+      i = i + 1;
+    }, 2000)
+
+    function init() {
+      var n = 1
+      $(`.images > img:nth-child(${n})`).addClass('current')
+        .siblings().addClass('enter')
+    }
+  </script>
+</body>
+</html>
