@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <style type="text/css">
+  div{
+    width: 100px;
+    height: 100px;
+    background: #000;
+  }
+  .one{
+    margin-bottom: 30px
+  }
+  .two{
+    margin-top: 30px
+  }
+  </style>
+  <div class="one"></div>
+  <p class="tt"></p>
+  <div class="two"></div>
+  <script>
+    class myPromise {
+      constructor(fn) {
+        this.status = "pending"
+        this.value = null
+        this.resloveCallback = []
+        this.rejectCallback = []
+        var reslove = function (val) {
+          if (this.status === 'pending') {
+            this.status = 'resolved'
+            this.value = val
+            this.resloveCallback.forEach((item) => {
+              item.call(this, val)
+            })
+          }
+        }
+        var reject = function (val) {
+          if (this.status === 'pending') {
+            this.status = 'rejected'
+            this.value = val
+            this.rejectCallback.forEach((item) => {
+              item.call(this, val)
+            })
+          }
+        }
+        reslove = reslove.bind(this)
+        reject = reject.bind(this)
+        setTimeout(fn, 0, reslove, reject)
+      }
+      then(resolve, reject) {
+        return new myPromise((resolveFn, rejectFn) => {
+          var onResolve = function (val) {
+            try {
+              var resolveResult = resolve(val)
+              if (isTherable(resolveResult)) {
+                resolveResult.then(resolveFn, rejectFn)
+              } else {
+                resolveFn(resolveResult)
+              }
+            } catch (e) {
+              rejectFn(e)
+            }
+
+          }
+          var onReject = function () {
+
+            rejectFn()
+          }
+          onResolve = onResolve.bind(this)
+          onReject = onReject.bind(this)
+          switch (this.status) {
+            case 'pending':
+              this.resloveCallback.push(onResolve)
+              this.rejectCallback.push(onReject)
+              break;
+            case 'resolved':
+              onResolve(this.value)
+              break;
+            case 'rejected':
+              onReject(this.value)
+              break;
+          }
+        })
+      }
+    }
+
+    function isTherable(v) {
+      return v && typeof v.then === 'function'
+    }
+    var testPromise = new myPromise((resovle, reject) => {
+      setTimeout(function () {
+        console.log('123')
+        resovle('666')
+      })
+    })
+    testPromise.then((data) => {
+      console.log(data)
+    }).then(() => {
+      console.log('ty')
+    })
+
+    
+
+    function promiseFactory(index) {
+      return new Promise((resolve, reject) => {
+        resolve()
+        console.log(index)
+      })
+    }
+
+    function executePromises(promisesIndex) {
+      var result = Promise.resolve()
+      promisesIndex.forEach(index => {
+        result = result.then(promiseFactory(index))
+      })
+      return result
+    }
+
+    executePromises([1, 2, 3, 4]) //1,2,3,4
+  </script>
+</body>
+
+</html>

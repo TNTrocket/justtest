@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<style type="text/css">
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  img {
+    width: 100%;
+  }
+</style>
+
+<body>
+  <div class="lazy">
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+    <div><img data-src="./test.jpg" src="./0.png"></div>
+  </div>
+  <script>
+    let images = document.querySelectorAll('.lazy img')
+    let clientHeight = document.documentElement.clientHeight
+    let num = 0
+
+    function scorll() {
+      for (let i = num; i <= images.length - 1; i++) {
+        let topText = images[i].getBoundingClientRect().top
+        // console.log(`top${i}`, topText);
+        if (clientHeight - topText > 0) {
+          console.log(`top${i}`, clientHeight - topText)
+          images[i].src = images[i].getAttribute('data-src')
+          num = i + 1
+        }
+      }
+    }
+
+    function throttle(fn, dely) {
+      let last = 0
+      return function () {
+        let now = new Date().getTime()
+        if (now - last >= dely) {
+          fn.apply(this, arguments)
+          last = now
+        }
+      }
+    }
+
+    function debounce(fn, limitDely) {
+      let timer
+      let last = 0
+      return function () {
+        clearTimeout(timer)
+        let now = new Date().getTime()
+        if (now - last >= limitDely) {
+          fn.apply(this, arguments)
+          last = now
+        } else {
+          timer = setTimeout(() => {
+            fn.apply(this, arguments)
+          }, 500)
+        }
+      }
+    }
+    // 监听Scroll事件
+    window.addEventListener('scroll', debounce(scorll, 3000), false);
+    window.addEventListener('load', debounce(scorll, 3000), false);
+  </script>
+</body>
+
+</html>
