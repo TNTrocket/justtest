@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function deepProxy(object, handler) {
+        if (isrealObject(object)) {
+          addProxy(object, handler);
+        }
+        return new Proxy(object, handler);
+      }
+      function addProxy(obj, handler) {
+        for (let i in obj) {
+          if (typeof obj[i] === 'object') {
+            if (isrealObject(obj[i])) {
+              addProxy(obj[i], handler);
+            }
+            obj[i] = new Proxy(obj[i], handler);
+          }
+        }
+        obj = new Proxy(obj, handler);
+      }
+      function isrealObject(object) {
+        if (typeof object !== 'object') {
+          return false;
+        } else {
+          for (let prop in object) {
+            if (typeof object[prop] == 'object') {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+      
+      let person = {
+        txt: 123,
+        name: 'tnt',
+        age: 26,
+        status: {
+          money: 'less',
+          fav: [1, 2, 3]
+        }
+      };
+      let proxyObj = deepProxy(person, {
+        get(target, key, receiver) {
+          console.log(`get--${target}--${key}`);
+          return Reflect.get(target, key);
+        },
+        set(target, key, value, receiver) {
+          console.log(`set--${target}--${key}-${value}`);
+          // target[key] = value;
+          return Reflect.set(target, key, value);
+        }
+      });
+      // proxyObj.name = 13
+      // proxyObj.name
+      proxyObj.status.test = 13;
+      proxyObj.status.fav.push('33');
+    </script>
+  </body>
+</html>

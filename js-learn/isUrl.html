@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function isUrl(url) {
+        const a = document.createElement('a');
+        a.href = url;
+        console.log(a.host);
+        let testArr = [];
+        testArr = [
+          /^(http|https):$/.test(a.protocol),
+          a.host,
+          a.pathname !== url,
+          a.pathname !== `/${url}`
+        ];
+        return testArr.find(x => !x) === undefined;
+      }
+
+      console.log(isUrl('aa'));
+
+      function isAUrl(url) {
+        try {
+          new URL(url);
+          return true;
+        } catch (err) {
+          return false;
+        }
+      }
+      console.log(isAUrl('qqq'));
+    </script>
+  </body>
+</html>

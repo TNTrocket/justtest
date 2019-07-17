@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // let person = [1, 2, 3];
+      let person = {
+        name: 'tnt',
+        age: 26,
+        list: [1, 2, 3],
+        listObj:{
+          test:13
+        }
+      };
+      // person = new Proxy(person, {
+      //   get(target, key, receiver) {
+      //     console.log(`get--${target}--${key}`);
+      //     return target[key];
+      //   },
+      //   set(target, key, value, receiver) {
+      //     console.log(`set--${target}--${key}-${value}`);
+      //     target[key] = value;
+      //     return true;
+      //   }
+      // });
+      function defineObjectReactive(data, key, value) {
+        data[key] = new Proxy(person, {
+          get(target, key, receiver) {
+          console.log(`get--${target}--${key}`);
+          return Reflect.get(target, key);
+        },
+        set(target, key, value, receiver) {
+          console.log(`set--${target}--${key}-${value}`);
+          // target[key] = value;
+          return Reflect.set(target, key, value);
+        }
+        });
+      }
+      function createProxy(data){
+          for(let k in data){
+            // debugger
+              defineObjectReactive(data, k, data[k])
+          }
+      }
+      let proxyObj = createProxy(person)
+      // debugger
+      // person.name = 13
+      console.log(person.name)
+      //   const createProxy = data => {
+      //     if (typeof data === 'object' && data.toString() === '[object Object]') {
+      //       for (let k in data) {
+      //         if (typeof data[k] === 'object') {
+      //           defineObjectReactive(data, k, data[k]);
+      //         } else {
+      //           defineBasicReactive(data, k, data[k]);
+      //         }
+      //       }
+      //     }
+      //   };
+
+      //   function defineObjectReactive(obj, key, value) {
+      //     // 递归
+      //     createProxy(value);
+      //     debugger
+      //     obj[key] = new Proxy(value, {
+      //       set(target, property, val, receiver) {
+      //           debugger
+      //         if (property !== 'length') {
+      //           console.log('Set %s to %o', property, val);
+      //         }
+      //         return Reflect.set(target, property, val, receiver);
+      //       }
+      //     });
+      //   }
+
+      //   function defineBasicReactive(obj, key, value) {
+      //     Object.defineProperty(obj, key, {
+      //       enumerable: true,
+      //       configurable: false,
+      //       get() {
+      //         return value;
+      //       },
+      //       set(newValue) {
+      //         if (value === newValue) return;
+      //         console.log(`发现 ${key} 属性 ${value} -> ${newValue}`);
+      //         value = newValue;
+      //       }
+      //     });
+      //   }
+      //   createProxy(person)
+      //   person.list=['123']
+      //   person.name= 'tt'
+    </script>
+  </body>
+</html>
