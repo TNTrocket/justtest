@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas">ttt</canvas>
+    <script type="shader-source" id="vertexShader">
+      precision mediump float;
+      attribute vec2 a_Position;
+      void main(){
+        gl_Position = vec4(a_Position, 0, 1);
+        gl_PointSize = 10.0;
+       }
+    </script>
+    <script type="shader-source" id="fragmentShader">
+      precision mediump float;
+        //接收 JavaScript 传过来的颜色值（RGBA）。
+      uniform vec4 u_Color;
+      void main(){
+        //将普通的颜色表示转化为 WebGL 需要的表示方式，即将【0-255】转化到【0,1】之间。
+        vec4 color = u_Color / vec4(255, 255, 255, 1);
+        gl_FragColor = color;
+      }
+    </script>
+    <script src="./init.js"></script>
+    <script>
+      let canvas = document.querySelector('#canvas');
+
+      let positions = [1, 0, 0, 1, 0, 0];
+
+      // (1)console.log(add(1)(2)(3)(4)());//10
+      // (2)console.log(add(1,2)(3,4)());//10
+      // (3)console.log(add(1,2)(3,4));//10
+
+      // function sub_curry(fn) {
+      //   var args = [].slice.call(arguments, 1);
+      //   return function() {
+      //     return fn.apply(this, args.concat([].slice.call(arguments)));
+      //   };
+      // }
+
+      // function curry(fn, length) {
+      //   length = length || fn.length;
+
+      //   var slice = Array.prototype.slice;
+
+      //   return function() {
+      //     if (arguments.length < length) {
+      //       console.log(length);
+      //       var combined = [fn].concat(slice.call(arguments));
+      //       return curry(
+      //         sub_curry.apply(this, combined),
+      //         length - arguments.length
+      //       );
+      //     } else {
+      //       return fn.apply(this, arguments);
+      //     }
+      //   };
+      // }
+      // var fn = curry(function(a, b, c) {
+      //   return [a, b, c];
+      // });
+      // let abc = fn('a')('b')('d'); // ["a", "b", "c"]
+      // console.log('abc', abc);
+
+      // function add() {
+      //     let arg = Array.prototype.slice.call(arguments);
+      //     let temp = 0
+      //     console.log('arg', arg)
+      //     for (let i = 0; i < arg.length; i++) {
+      //         temp += arg[i]
+      //     }
+      //     return temp
+      // }
+      // let testAdd = curry(add)
+      // let testr = testAdd(1)(5)
+
+      // function curry(fn) {
+      //   let slice = Array.prototype.slice, // 将slice缓存起来
+      //     args = slice.call(arguments, 1); // 这里将arguments转成数组并保存
+
+      //   return function() {
+      //     // 将新旧的参数拼接起来
+      //     let newArgs = args.concat(slice.call(arguments));
+      //     return fn.apply(null, newArgs); // 返回执行的fn并传递最新的参数
+      //   };
+      // }
+      // const foo = curry((a, b, c, d) => {
+      //   console.log([a, b, c, d]);
+      // });
+      // foo('1')
+
+      // function curry(fn, hole) {
+      //   const __len = fn.length;
+      //   let args = [];
+      //   return function h() {
+      //     // 先把参数放入args数组
+      //     args = [...args, ...Array.from(arguments)];
+      //     // 如果长度超过原有函数参数列表长度，表示有占位
+      //     let holeNum = args.length - __len;
+      //     // 第一个占位符对应的肯定是__len位置的变量，循环将所有占位符替换
+      //     for (let i = 0; i < holeNum; i++) {
+      //       args[args.indexOf(hole)] = args[__len];
+      //       args.splice(__len, 1);
+      //     }
+      //     // 如果没有占位符且参数数目已经够了
+      //     if (args.length < __len || args.indexOf(hole) > -1) {
+      //       return h;
+      //     } else {
+      //       fn.apply(null, args);
+      //       return (args = []);
+      //     }
+      //   };
+      // }
+
+      // var _ = {};
+
+      // var fn = curry(function(a, b, c, d, e) {
+      //   console.log([a, b, c, d, e]);
+      // });
+
+      // fn(1, 2, 3, 4, 5);
+      // fn(_, 2, 3, 4, 5)(1);
+      // fn(1, _, 3, 4, 5)(2);
+      // fn(1, _, 3)(_, 4)(2)(5);
+      // fn(1, _, _, 4)(_, 3)(2)(5);
+      // fn(_, 2)(_, _, 4)(1)(3)(5);
+
+      // function currying(fn) {
+      //   let fLength = fn.length;
+      //   let arg = [];
+      //   return function h() {
+      //     arg = [...arg, ...Array.from(arguments)];
+      //     if (arg.length >= fLength) {
+      //      return fn.apply(this, [...arg]);
+      //     } else {
+      //       return h;
+      //     }
+      //   };
+      // }
+      // let testCurry = currying(function(a, b, c) {
+      //   return a + b + c;
+      // });
+      // let result = testCurry(1)(2, 3);
+      // let resultb = testCurry(1)(2)(3);
+      // console.log(result);
+
+      function testddd() {
+        var fnc = function() {};
+        fnc.valueOf = function() {
+          return 1234
+        };
+        fnc.toString = function() {
+          return '123';
+        };
+        return fnc;
+      }
+      let okc = testddd();
+      console.log('okc', okc);
+
+      function add(x) {
+        var sum = x;
+        var tmp = function(y) {
+          sum += y;
+          return tmp;
+        };
+        tmp.toString = function() {
+          return sum;
+        };
+        return tmp;
+      }
+      console.log(add(1)(2)(3)); //6
+      console.log(add(1)(2)(3)(4)(5)); //15
+
+      let obj = {
+        // valueOf(){
+        //   return 12
+        // },
+        toString(){
+          return 16
+        }
+      }
+      console.log('obj', obj+1)
+      let test = function(){
+
+      }
+      test.toString= function(){
+        return 123
+      }
+      console.log(test())
+    </script>
+  </body>
+</html>
