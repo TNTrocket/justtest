@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <ul>
+      <li><img src="./img/default.png" data="./img/1.png" alt="" /></li>
+      <li><img src="./img/default.png" data="./img/2.png" alt="" /></li>
+      <li><img src="./img/default.png" data="./img/3.png" alt="" /></li>
+      <li><img src="./img/default.png" data="./img/4.png" alt="" /></li>
+      <li><img src="./img/default.png" data="./img/5.png" alt="" /></li>
+      <li><img src="./img/default.png" data="./img/6.png" alt="" /></li>
+      <li><img src="./img/default.png" data="./img/7.png" alt="" /></li>
+      <li><img src="./img/default.png" data="./img/8.png" alt="" /></li>
+    </ul>
+    <script>
+      let imgs = document.querySelectorAll('img');
+      // 窗口可视区高度
+      let clientHeight =
+        window.innerHeight ||
+        document.documentElement.clientHeight ||
+        document.body.clientHeight;
+      // img 距离窗口可视区顶部的距离 imgs[i].getBoundingClientRect().top
+      function lazyLoadImg() {
+        for (let i = 0; i < imgs.length; i++) {
+          if (
+            imgs[i].getBoundingClientRect().top + imgs[i].height >= 0 &&
+            imgs[i].getBoundingClientRect().top < clientHeight
+          ) {
+            const imgUrl = imgs[i].getAttribute('data');
+            _preloadImg(
+              imgUrl,
+              function() {
+                imgs[i].src = imgUrl;
+              },
+              function() {
+                imgs[i].src = '/img/loaderror.jpg';
+              }
+            );
+          }
+        }
+      }
+
+      function _preloadImg(url, callback, onerror) {
+        const img = new Image();
+        img.src = url;
+        img.onload = function() {
+          if (callback) {
+            callback();
+          }
+        };
+        img.onerror = function() {
+          if (onerror) {
+            onerror();
+          }
+        };
+      }
+      window.addEventListener('scroll', lazyLoadImg);
+    </script>
+  </body>
+</html>

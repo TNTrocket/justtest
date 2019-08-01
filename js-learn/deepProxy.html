@@ -9,7 +9,7 @@
   <body>
     <script>
       function deepProxy(object, handler) {
-        if (isrealObject(object)) {
+        if (isComplexObject(object)) {
           addProxy(object, handler);
         }
         return new Proxy(object, handler);
@@ -17,27 +17,26 @@
       function addProxy(obj, handler) {
         for (let i in obj) {
           if (typeof obj[i] === 'object') {
-            if (isrealObject(obj[i])) {
+            if (isComplexObject(obj[i])) {
               addProxy(obj[i], handler);
             }
             obj[i] = new Proxy(obj[i], handler);
           }
         }
-        obj = new Proxy(obj, handler);
       }
-      function isrealObject(object) {
+      function isComplexObject(object) {
         if (typeof object !== 'object') {
           return false;
         } else {
           for (let prop in object) {
-            if (typeof object[prop] == 'object') {
+            if (typeof object[prop] === 'object') {
               return true;
             }
           }
         }
         return false;
       }
-      
+
       let person = {
         txt: 123,
         name: 'tnt',
@@ -54,14 +53,12 @@
         },
         set(target, key, value, receiver) {
           console.log(`set--${target}--${key}-${value}`);
-          // target[key] = value;
           return Reflect.set(target, key, value);
         }
       });
-      // proxyObj.name = 13
-      // proxyObj.name
       proxyObj.status.test = 13;
       proxyObj.status.fav.push('33');
+      proxyObj.okc = 12
     </script>
   </body>
 </html>
