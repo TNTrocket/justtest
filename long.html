@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div></div>
+    <script>
+      //   var lengthOfLongestSubstring = function(s) {
+      //     var i = 0,
+      //       res = 0,
+      //       n = 0;
+      //     for (var j = 0; j < s.length; j++) {
+      //       n = s.slice(i, j).indexOf(s[j]);
+      //       debugger
+      //       if (n == -1) {
+      //         res = Math.max(res, j + 1 - i);
+      //       } else {
+      //         i += n + 1;
+      //       }
+      //     }
+      //     return res;
+      //   };
+      var lengthOfLongestSubstring = function(s) {
+        let n = s.length;
+        let hashMap = new Map();
+        let ans = 0;
+        for (let i = 0, j = 0; i < n; i++) {
+          //   debugger;
+          if (hashMap.has(s[i])) {
+            j = Math.max(hashMap.get(s[i]), j);
+          }
+          ans = Math.max(ans, i - j + 1);
+          hashMap.set(s[i], i + 1);
+        }
+        return ans;
+      };
+
+      let str = 'pwwkew';
+      let strlength = lengthOfLongestSubstring(str);
+      console.log(strlength);
+      //   let testArr = [2, 56, 7, 90, 1, 4, 6, 6];
+      //   function sortArray(arr) {
+      //     arr.sort((a, b) => {
+      //       return b - a;
+      //     });
+      //   }
+      //   sortArray(testArr);
+      //   console.log(testArr);
+
+      var reverse = function(x) {
+        let xArr = String.prototype.split.call(x, '');
+        console.log('xArr', xArr);
+
+        xArr = xArr.reverse().join();
+        return xArr;
+      };
+      reverse(123);
+
+      var isPalindrome = function(x) {
+        let result = 0;
+        if (x < 0 || (x % 10 === 0 && x !== 0)) {
+          return false;
+        }
+        while (x > result) {
+          result = result * 10 + (x % 10);
+          x = ~~(x / 10);
+        }
+        return result === x || x === ~~(result / 10);
+        // return x.toString().split('').reverse().join('') === x.toString()
+      };
+
+      var moveZeroes = function(nums) {
+        let n = nums.length;
+        for (let i = 0; i < n; i++) {
+          if (nums[i] == 0) {
+            nums.splice(i, 1);
+            nums.push(0);
+            n--; //减去push 0这一项,如果不减,会造成死循环.
+            i--; //删除一项后,后面的值变成当前位置,遍历时要从当前位置开始
+          }
+        }
+        return nums;
+      };
+
+      var removeDuplicates = function(nums) {
+        if (!nums || !(nums instanceof Array))
+          throw new Error('nums必须为数组');
+        if (nums.length === 0) {
+          return 0;
+        }
+        let i = 0;
+        for (let j = 0; j < nums.length; j++) {
+            // debugger
+          if (nums[j] != nums[i]) {
+            i++;
+            nums[i] = nums[j];
+          }
+        }
+        return i + 1;
+      };
+      removeDuplicates([5,5,8,8,99,99])
+    </script>
+  </body>
+</html>

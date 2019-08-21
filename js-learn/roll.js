@@ -1,3 +1,6 @@
+/**
+ * @description Roll 计算权重
+ */
 class Roll {
     constructor() {
         this.rollList = []
