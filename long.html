@@ -103,6 +103,26 @@
         return i + 1;
       };
       removeDuplicates([5,5,8,8,99,99])
+
+
+      console.log(typeof foo)
+      // debugger
+      function foo(){
+        console.log('oo')
+      }
+      var foo = 123
+
+
+      var obja = 66
+      var objtt = {
+        obja: 12,
+        kk(){
+          console.log(this.obja)
+        }
+      }
+      objtt.kk()
+      var lll = objtt.kk
+      lll()
     </script>
   </body>
 </html>

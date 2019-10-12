@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="click">
+      <div data-cc="1">1</div>
+      <div data-cc="2">2</div>
+      <div data-cc="3">3</div>
+    </div>
+    <script>
+      let testclick = document.querySelector('#click');
+      testclick.onclick = e => {
+        console.log(e);
+        console.log(e.target.parentNode);
+        console.log(e.currentTarget);
+      };
+
+      var kk = 12;
+
+      function okc() {
+        console.log('this', this);
+        console.log(this.kk);
+      }
+      let obj = {
+        kk: 13,
+        nm: function(fn) {
+          fn();
+          arguments[0]();
+        }
+      };
+      obj.nm(okc);
+
+      let objxx = {
+        valueOf() {
+          return {};
+        },
+        toString() {
+          return 13;
+        }
+        // [Symbol.toPrimitive]: function(hit) {
+        //   console.log('hit', hit);
+        //   return 13;
+        // }
+      };
+      console.log(+objxx);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div onclick="record()">开始录音</div>
+    <script>
+
+      function record() {
+        window.navigator.mediaDevices
+          .getUserMedia({
+            audio: {
+              sampleRate: 44100, // 采样率
+              channelCount: 2, // 声道
+              volume: 1.0 // 音量
+            }
+          })
+          .then(mediaStream => {
+            console.log(mediaStream);
+            beginRecord(mediaStream);
+          })
+          .catch(err => {
+            // 如果用户电脑没有麦克风设备或者用户拒绝了，或者连接出问题了等
+            // 这里都会抛异常，并且通过err.name可以知道是哪种类型的错误
+            console.error(err);
+          });
+      }
+
+      // function fuc() {
+      //   setTimeout(()=>{
+
+      //   console.log(aa);
+
+      //   }, 3000)
+      // }
+      // try {
+      //   fuc();
+      // } catch (e) {
+      //   console.log(e);
+      // }
+    </script>
+  </body>
+</html>
